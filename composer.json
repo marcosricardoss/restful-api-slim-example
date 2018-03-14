@@ -1,6 +1,6 @@
 {
     "name": "marcosricardoss/rest-api-slim-example",
-    "description": "Example of using the slim framework to make a REST API",
+    "description": "Example of using the slim framework to make a Restful API",
     "keywords": ["microframework", "rest", "router", "psr7"],
     "homepage": "http://github.com/marcosricardoss/rest-api-slim-example",
     "license": "MIT",
