@@ -2,7 +2,7 @@
 
 ## Pull Requests
 
-1. Fork the Slim Skeleton repository
+1. Fork the Restul API Example repository
 2. Create a new branch for each feature or improvement
 3. Send a pull request from each feature branch to the **3.x** branch
 
