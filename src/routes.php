@@ -9,3 +9,7 @@ $app->get('/', function (Request $request, Response $response, array $args) {
     # Render index view
     return $this->renderer->render($response, 'index.phtml', $args);
 });
+
+$app->group('/auth', function () {   
+    $this->post('/register', "Marcosricardoss\Restful\Controller\AuthController:register");
+});
