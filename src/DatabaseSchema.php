@@ -21,6 +21,7 @@ class DatabaseSchema {
                 $table->string('username');
                 $table->string('role');
                 $table->string('password');
+                $table->timestamps();
             });
         }
     }
