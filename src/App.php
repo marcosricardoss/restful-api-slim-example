@@ -25,7 +25,34 @@ class App {
         require __DIR__.'/../src/routes.php';
 
         $this->app = $app;
+        $this->setUpDatabaseManager();        
+        $this->setUpDatabaseSchema();
 
+    }
+
+
+    /**
+     * Setup Eloquent ORM.
+     */
+    private function setUpDatabaseManager()
+    {
+        # Register the database connection with Eloquent
+        $capsule = $this->app->getContainer()->get('capsule');
+        $capsule->setAsGlobal();
+        $capsule->bootEloquent();
+    }    
+
+
+    /**
+     * Create necessary database tables needed in the application.
+     */
+    private function setUpDatabaseSchema()
+    {
+        try {
+            DatabaseSchema::createTables();
+        } catch (\Exception $e) {
+            # this exception would be caught by the global exception handler.
+        }
     }
 
     /**
