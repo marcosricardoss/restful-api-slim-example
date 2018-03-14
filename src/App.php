@@ -1,6 +1,6 @@
 <?php
 
-namespace Marcosricardoss\RestAPI;
+namespace Marcosricardoss\Restful;
 
 class App {
 

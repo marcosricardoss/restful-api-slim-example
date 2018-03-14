@@ -15,7 +15,7 @@ date_default_timezone_set('UTC');
 require __DIR__ . '/../vendor/autoload.php';
 
 # getting instance of app
-$app = (new Marcosricardoss\RestAPI\App(__DIR__.'/../'))->get();
+$app = (new Marcosricardoss\Restful\App(__DIR__.'/../'))->get();
 
 # Run app
 $app->run();

@@ -1,6 +1,6 @@
 <?php
 
-namespace Marcosricardoss\RestAPI;;
+namespace Marcosricardoss\Restful;
 
 use Illuminate\Database\Capsule\Manager as Capsule;
 use Illuminate\Database\Schema\Blueprint;
