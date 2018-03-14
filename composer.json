@@ -28,6 +28,11 @@
             "Tests\\": "tests/"
         }
     },
+    "autoload": {
+        "psr-4": {
+            "marcosricardoss\\app\\" : "src"
+        }
+    },
     "config": {
         "process-timeout" : 0
     },
