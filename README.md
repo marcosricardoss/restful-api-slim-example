@@ -1,3 +1,3 @@
-# Rest API Example
+# Restful API Example
 
-This is a simple Restful API for Blog Service, using the Slim Framework.
+This is a simple Restful API for Blog Service using the Slim Framework.
