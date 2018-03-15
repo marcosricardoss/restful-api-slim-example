@@ -2,6 +2,7 @@
 
 namespace Marcosricardoss\Restful\Controller;
 
+use Firebase\JWT\JWT;
 use Marcosricardoss\Restful\Helpers;
 use Marcosricardoss\Restful\Model\User;
 use Marcosricardoss\Restful\Security\UserAuthenticator;
@@ -30,8 +31,35 @@ final class AuthController {
             return $response->withJson(['message' => 'Username or Password not valid.'], 401);
         }
         
-        return $response->withJson(['message' => 'The user is logged in.'], 201);
+        return $response->withJson(['token' => $this->generateToken($user->id)]);
     }
+
+
+    /**
+     * Generate a token for user with passed Id.
+     *
+     * @param int $userId
+     *
+     * @return string
+     */
+    private function generateToken($userId)
+    {
+        $appSecret = getenv('APP_SECRET');
+        $jwtAlgorithm = getenv('JWT_ALGORITHM');
+        $timeIssued = time();
+        $tokenId = base64_encode(mcrypt_create_iv(32));
+        $token = [
+            'iat'  => $timeIssued, # Issued at: time when the token was generated
+            'jti'  => $tokenId, # Json Token Id: an unique identifier for the token
+            'nbf'  => $timeIssued, # Not before time
+            'exp'  => $timeIssued + 60 * 60 * 24 * 30, # expires in 30 days
+            'data' => [ # Data related to the signer user
+                'userId'   => $userId, # userid from the users table
+            ],
+        ];
+        return JWT::encode($token, $appSecret, $jwtAlgorithm);
+    }
+
 
      /**
      * Register a user.
