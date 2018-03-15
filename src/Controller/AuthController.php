@@ -2,8 +2,9 @@
 
 namespace Marcosricardoss\Restful\Controller;
 
-use Marcosricardoss\Restful\Model\User;
 use Marcosricardoss\Restful\Helpers;
+use Marcosricardoss\Restful\Model\User;
+use Marcosricardoss\Restful\Security\UserAuthenticator;
 
 final class AuthController {
 
@@ -21,11 +22,11 @@ final class AuthController {
         
         if ($this->validateUserData($userData)) {
             return $response->withJson(['message' => 'Username or Password field not provided.'], 400);
-        }               
+        }                       
         
-        $user = User::where('username', $userData['username'])->first();
+        $user = UserAuthenticator::authenticate($userData['username'], $userData['password']);
 
-        if (!password_verify($userData['password'], $user->password)) {
+        if (!$user) {
             return $response->withJson(['message' => 'Username or Password not valid.'], 401);
         }
         
