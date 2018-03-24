@@ -25,5 +25,15 @@ class DatabaseSchema {
             });
         }
     }
+
+    public static function createBlacklistedTokensTable() {
+        if (!Capsule::schema()->hasTable('blacklisted_tokens')) {
+            Capsule::schema()->create('blacklisted_tokens', function (Blueprint $table) {
+                $table->increments('id');
+                $table->integer('user_id');
+                $table->string('token_jti')->unique();
+            });
+        }
+    }
     
 }
