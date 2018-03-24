@@ -9,7 +9,7 @@ class User extends Eloquent {
     protected $fillable = ['username', 'password', 'role'];
 
     public function blacklistedTokens() {
-        return;
+        return $this->hasMany("Marcosricardoss\Restful\ModelBlacklistedToken", 'user_id');
     }
 
     public function posts() {
