@@ -34,4 +34,19 @@ class RestfulApiTest extends PHPUnit_Framework_TestCase {
         $this->registerErrorMessage = 'Username or Password field not provided.';
     }
 
+    protected function post($url, $body) {
+        $env = Environment::mock([
+            'REQUEST_METHOD' => 'POST',
+            'REQUEST_URI'    => $url,
+            'CONTENT_TYPE'   => 'application/x-www-form-urlencoded',
+        ]);
+        $req = Request::createFromEnvironment($env)->withParsedBody($body);
+        $this->app->getContainer()['request'] = $req;
+        return $this->app->run(true);
+    }
+
+    public function testPHPUnitWarningSuppressor() {
+        $this->assertTrue(true);
+    }
+
 }
