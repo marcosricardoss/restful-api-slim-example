@@ -41,5 +41,22 @@ $container['capsule'] = function ($c) {
     return $capsule;
 };
 
+
+# custom errorHandler
+$container['errorHandler'] = function ($c) {
+    return function ($request, $response, $exception) use ($c) {
+        if ($exception instanceof \DomainException || $exception instanceof \Firebase\JWT\SignatureInvalidException) {
+            return $response->withJson(['message' => $exception->getMessage()], 401);
+        }
+
+        if ($exception instanceof \Firebase\JWT\ExpiredException) {
+            return $response->withJson(['message' => 'The provided token as expired.'], 401);
+        }
+
+        $c->logger->critical($exception->getMessage());
+        return $response->withJson(['message' => "Sorry, We're having technical difficulties processing your request. Our Developers would fix this issue as soon as possible."], 500);
+    };
+};
+
 $dotenv = new \Dotenv\Dotenv($envFilePath);
 $dotenv->overload();
