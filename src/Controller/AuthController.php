@@ -34,7 +34,6 @@ final class AuthController {
         return $response->withJson(['token' => $this->generateToken($user->id)]);
     }
 
-
     /**
      * Generate a token for user with passed Id.
      *
@@ -60,6 +59,10 @@ final class AuthController {
         return JWT::encode($token, $appSecret, $jwtAlgorithm);
     }
 
+    
+    public function logout($request, $response) {
+        
+    }
 
      /**
      * Register a user.
