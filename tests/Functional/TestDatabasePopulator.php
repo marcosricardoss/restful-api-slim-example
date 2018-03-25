@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Capsule\Manager as Capsule;
 
-use Marcosricardoss\Restful\User;
+use Marcosricardoss\Restful\Model\User;
 
 class TestDatabasePopulator {
     
@@ -16,6 +16,7 @@ class TestDatabasePopulator {
         Capsule::beginTransaction();
         try {
             $user = User::firstOrCreate(['username' => 'tester', 'password' => password_hash('test', PASSWORD_DEFAULT), 'role' => 'member']);
+            Capsule::commit();
             # all good
         } catch (\Exception $e) {
             Capsule::rollback();
