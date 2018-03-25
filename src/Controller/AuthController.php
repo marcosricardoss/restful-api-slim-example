@@ -5,6 +5,7 @@ namespace Marcosricardoss\Restful\Controller;
 use Firebase\JWT\JWT;
 use Marcosricardoss\Restful\Helpers;
 use Marcosricardoss\Restful\Model\User;
+use Marcosricardoss\Restful\Model\BlacklistedToken;
 use Marcosricardoss\Restful\Security\UserAuthenticator;
 
 final class AuthController {
@@ -61,7 +62,11 @@ final class AuthController {
 
     
     public function logout($request, $response) {
-        
+        $user = $request->getAttribute('user');
+        $blacklistedToken = new BlacklistedToken();
+        $blacklistedToken->token_jti = $request->getAttribute('token_jti');
+        $user->blacklistedTokens()->save($blacklistedToken);
+        return $response->withJson(['message' => 'Logout Successful'], 200);
     }
 
      /**
