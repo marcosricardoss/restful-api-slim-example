@@ -33,6 +33,7 @@ class DatabaseSchema {
                 $table->increments('id');
                 $table->integer('user_id');
                 $table->string('token_jti')->unique();
+                $table->timestamps();
             });
         }
     }
