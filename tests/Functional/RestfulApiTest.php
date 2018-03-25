@@ -49,4 +49,10 @@ class RestfulApiTest extends PHPUnit_Framework_TestCase {
         $this->assertTrue(true);
     }
 
+    protected function getLoginTokenForTestUser() {
+        $response = $this->post('/auth/login', ['username' => 'tester', 'password' => 'test']);
+        $result = json_decode($response->getBody(), true);
+        return $result['token'];
+    }
+
 }
