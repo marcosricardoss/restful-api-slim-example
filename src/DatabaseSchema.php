@@ -12,6 +12,7 @@ class DatabaseSchema {
      */
     public static function createTables() {
         self::createUsersTable();        
+        self::createBlacklistedTokensTable();
     }
 
     private static function createUsersTable() {
