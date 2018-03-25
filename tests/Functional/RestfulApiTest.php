@@ -2,11 +2,11 @@
 
 use Slim\Http\Environment;
 use Slim\Http\Request;
-
 use org\bovigo\vfs\vfsStream;
-
 use Marcosricardoss\Restful\App;
 use Marcosricardoss\Restful\User;
+
+require_once 'TestDatabasePopulator.php';
 
 class RestfulApiTest extends PHPUnit_Framework_TestCase {
 
@@ -31,6 +31,7 @@ class RestfulApiTest extends PHPUnit_Framework_TestCase {
             database=restfulapi
             ');
         $this->app = (new App($root->url()))->get();
+        $this->user = TestDatabasePopulator::populate();
         $this->registerErrorMessage = 'Username or Password field not provided.';
     }
 
@@ -50,7 +51,7 @@ class RestfulApiTest extends PHPUnit_Framework_TestCase {
     }
 
     protected function getLoginTokenForTestUser() {
-        $response = $this->post('/auth/login', ['username' => 'tester', 'password' => 'test']);
+        $response = $this->post('/auth/login', ['username' => $this->user->username, 'password' => $this->user->password]);
         $result = json_decode($response->getBody(), true);
         return $result['token'];
     }
