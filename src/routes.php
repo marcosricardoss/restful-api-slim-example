@@ -5,8 +5,7 @@ use Slim\Http\Response;
 
 # Routes
 
-$app->get('/', function (Request $request, Response $response, array $args) {
-    # Render index view
+$app->get('/', function (Request $request, Response $response, array $args) {    
     return $this->renderer->render($response, 'index.phtml', $args);
 });
 
@@ -14,7 +13,9 @@ $app->get('/posts', "Marcosricardoss\Restful\Controller\PostController:getPosts"
 $app->get('/posts/{id}', "Marcosricardoss\Restful\Controller\PostController:getPost");
 
 $app->group('/posts', function () {
-    $this->map(['POST'], '', "Marcosricardoss\Restful\Controller\PostController:create");    
+    $this->map(['POST'], '', "Marcosricardoss\Restful\Controller\PostController:create");
+    $this->patch('/{id}', "Marcosricardoss\Restful\Controller\PostController:update");
+    $this->put('/{id}', "Marcosricardoss\Restful\Controller\PostController:update");
     $this->delete('/{id}', "Marcosricardoss\Restful\Controller\PostController:delete");
 })->add("Marcosricardoss\Restful\Middleware\AuthMiddleware");
 
