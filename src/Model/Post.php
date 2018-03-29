@@ -2,6 +2,7 @@
 
 namespace Marcosricardoss\Restful\Model;
 
+use Illuminate\Database\Capsule\Manager;
 use Illuminate\Database\Eloquent\Model as Eloquent;
 
 class Post extends Eloquent {    
@@ -43,5 +44,33 @@ class Post extends Eloquent {
      */
     public function scopeWithRelations($query) {
         return $query->with('category', 'keywords', 'created_by');
-    }    
+    }  
+    
+    /**
+     * Scope a query to search by keyword name.
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeSearchByKeywordName($query, $keywordName) {
+        return $query->withRelations()
+                     ->joinKeywordsTableLikeNameColumn($keywordName);
+    }
+
+    /**
+     * Scope query to join keyowords table.
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeJoinKeywordsTableLikeNameColumn($query, $name) {
+        return $query
+                ->join('post_keywords', 'post_keywords.post_id', '=', 'posts.id')
+                ->join('keywords',
+                            function ($join) use ($name) {
+                                $join->on('post_keywords.keyword_id', '=', 'keywords.id');
+                                $join->where('keywords.name', 'like', "%$name%");
+                            }
+                        )
+                    ->select(Manager::raw('posts.*'));
+    }
+
 }
