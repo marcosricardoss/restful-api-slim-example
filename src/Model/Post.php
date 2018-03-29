@@ -76,6 +76,16 @@ class Post extends Eloquent {
     }
 
     /**
+     * Scope a query to search by the creator's name.
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeSearchByCreatorName($query, $creatorName) {
+        return $query->withRelations()
+                     ->joinTableLikeNameColumn('users', $creatorName, 'created_by', 'username');
+    }
+
+    /**
      * Scope a query to join search table.
      *
      * @return \Illuminate\Database\Eloquent\Builder
