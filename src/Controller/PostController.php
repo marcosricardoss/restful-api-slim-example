@@ -102,6 +102,29 @@ final class PostController {
     }
 
     /**
+     * Update single post.
+     *
+     * @param Slim\Http\Request  $request
+     * @param Slim\Http\Response $response
+     * @param array              $args
+     *
+     * @return Slim\Http\Response
+     */
+    public function update($request, $response, $args) {
+        $user = $request->getAttribute('user');
+        $post = $user->posts()->find($args['id']);
+        if (!$post) {
+            $post = Post::find($args['id']);
+            if (!$post) {
+                return $this->create($request, $response, $args);
+            }
+            throw new \DomainException("You're not allowed to update a post that you did not create.");
+        }
+        $post->update($request->getParsedBody());
+        return $response->withJson(['message' => 'Post updated successfully.'], 200);
+    }
+
+    /**
      * Route for deleting a post.
      *
      * @param Slim\Http\Request  $request
