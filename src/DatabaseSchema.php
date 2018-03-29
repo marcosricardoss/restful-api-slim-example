@@ -13,6 +13,8 @@ class DatabaseSchema {
     public static function createTables() {
         self::createUsersTable();        
         self::createCategoriesTable();
+        self::createKeywordsTable();
+        self::createPostKeywordsTable();
         self::createPostTable();
         self::createBlacklistedTokensTable();
     }
@@ -34,6 +36,25 @@ class DatabaseSchema {
             Capsule::schema()->create('categories', function (Blueprint $table) {
                 $table->increments('id');
                 $table->string('name');                
+            });
+        }
+    }
+
+    public static function createKeywordsTable() {
+        if (!Capsule::schema()->hasTable('keywords')) {
+            Capsule::schema()->create('keywords', function (Blueprint $table) {
+                $table->increments('id');
+                $table->string('name');
+            });
+        }
+    }
+
+    public static function createPostKeywordsTable(){
+        if (!Capsule::schema()->hasTable('post_keywords')) {
+            Capsule::schema()->create('post_keywords', function (Blueprint $table) {
+                $table->increments('id');
+                $table->integer('post_id');
+                $table->integer('keyword_id');
             });
         }
     }
