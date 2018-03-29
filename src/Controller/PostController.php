@@ -3,13 +3,30 @@
 namespace Marcosricardoss\Restful\Controller;
 
 use Illuminate\Database\Capsule\Manager;
+
 use Marcosricardoss\Restful\Helpers;
 use Marcosricardoss\Restful\Model\User;
 use Marcosricardoss\Restful\Model\Post;
-use Marcosricardoss\Restful\Model\Keyword;
 use Marcosricardoss\Restful\Model\Category;
+use Marcosricardoss\Restful\Model\Keyword;
+
 
 final class PostController {
+
+
+    /**
+     * Fetch all posts.
+     *
+     * @param Slim\Http\Request  $request
+     * @param Slim\Http\Response $response
+     * @param array              $args
+     *
+     * @return Slim\Http\Response
+     */
+    public function getPosts($request, $response, $args) {
+        $result = Post::withRelations()->get();        
+        return $response->withJson($result);
+    }
 
     /**
      * Route for creating a post.
@@ -51,7 +68,7 @@ final class PostController {
             $keywords = [];
             foreach ($postData['keywords'] as $key => $keyword) {
                 $keyword = trim($keyword);
-                //Skip empty keywords
+                # Skip empty keywords
                 if (!$keyword) {
                     continue;
                 }
