@@ -12,6 +12,8 @@ class DatabaseSchema {
      */
     public static function createTables() {
         self::createUsersTable();        
+        self::createCategoriesTable();
+        self::createPostTable();
         self::createBlacklistedTokensTable();
     }
 
@@ -22,6 +24,27 @@ class DatabaseSchema {
                 $table->string('username');
                 $table->string('role');
                 $table->string('password');
+                $table->timestamps();
+            });
+        }
+    }
+
+    public static function createCategoriesTable() {
+        if (!Capsule::schema()->hasTable('categories')) {
+            Capsule::schema()->create('categories', function (Blueprint $table) {
+                $table->increments('id');
+                $table->string('name');                
+            });
+        }
+    }
+
+    public static function createPostTable() {
+        if (!Capsule::schema()->hasTable('post')) {
+            Capsule::schema()->create('post', function (Blueprint $table) {
+                $table->increments('id');
+                $table->string('title');                
+                $table->integer('category_id');
+                $table->integer('created_by');
                 $table->timestamps();
             });
         }
