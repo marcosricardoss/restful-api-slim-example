@@ -10,6 +10,8 @@ $app->get('/', function (Request $request, Response $response, array $args) {
     return $this->renderer->render($response, 'index.phtml', $args);
 });
 
+$app->get('/posts', "Marcosricardoss\Restful\Controller\PostController:getPosts");
+
 $app->group('/posts', function () {
     $this->map(['POST'], '', "Marcosricardoss\Restful\Controller\PostController:create");    
 })->add("Marcosricardoss\Restful\Middleware\AuthMiddleware");
