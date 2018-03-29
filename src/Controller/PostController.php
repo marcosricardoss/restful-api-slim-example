@@ -144,6 +144,44 @@ final class PostController {
     }
 
     /**
+     * Search for posts.
+     *
+     * @param Slim\Http\Request  $request
+     * @param Slim\Http\Response $response
+     * @param array              $args
+     *
+     * @return Slim\Http\Response
+     */
+    public function searchPost($request, $response, $args) {
+        $result = $this->searchPostBy($args['field'], $args['search']);
+        $this->formatPostDataForClient($result);
+        return $response->withJson($result);
+    }
+
+     /**
+     * Call appropriate post scope method for search.
+     *
+     * @param string $field
+     * @param string $searchValue
+     *
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    private function searchPostBy($field, $searchValue) {       
+
+        if ($field === 'title') {
+            $result = Post::searchByKeywordName($searchValue)->get();
+        } elseif ($field === 'keyword') {
+            $result = Post::searchByKeywordName($searchValue)->get();
+        } elseif ($field === 'createdBy') {
+            $result = Post::searchByKeywordName($searchValue)->get();
+        } else {
+            $result = Post::searchByKeywordName($searchValue)->get();
+        }
+
+        return $result;
+    }
+
+    /**
      * Format post information return by Eloquent for API format.
      *
      * @param Illuminate\Database\Eloquent\Collection $emojiData
