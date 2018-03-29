@@ -15,6 +15,7 @@ $app->get('/posts/{id}', "Marcosricardoss\Restful\Controller\PostController:getP
 
 $app->group('/posts', function () {
     $this->map(['POST'], '', "Marcosricardoss\Restful\Controller\PostController:create");    
+    $this->delete('/{id}', "Marcosricardoss\Restful\Controller\PostController:delete");
 })->add("Marcosricardoss\Restful\Middleware\AuthMiddleware");
 
 $app->group('/auth', function () {
