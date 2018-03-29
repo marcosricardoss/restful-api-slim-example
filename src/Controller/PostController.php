@@ -172,8 +172,8 @@ final class PostController {
             $result = Post::searchByTitle($searchValue)->get();
         } elseif ($field === 'keyword') {
             $result = Post::searchByKeywordName($searchValue)->get();
-        } elseif ($field === 'createdBy') {
-            $result = Post::searchByKeywordName($searchValue)->get();
+        } elseif ($field === 'createdBy') {            
+            $result = Post::searchByCreatorName($searchValue)->get();
         } else {
             $result = Post::searchByCategoryName($searchValue)->get();
         }
