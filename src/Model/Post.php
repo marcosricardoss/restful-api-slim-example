@@ -33,4 +33,12 @@ class Post extends Eloquent {
         return $this->belongsToMany('Marcosricardoss\Restful\Model\Keyword', 'post_keywords');
     }
 
+    /**
+     * Scope a query to include relations.
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeWithRelations($query) {
+        return $query->with('category', 'keywords', 'created_by');
+    }    
 }
