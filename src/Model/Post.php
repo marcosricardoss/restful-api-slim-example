@@ -45,6 +45,15 @@ class Post extends Eloquent {
     public function scopeWithRelations($query) {
         return $query->with('category', 'keywords', 'created_by');
     }  
+
+     /**
+     * Scope a query to search by post title.
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeSearchByTitle($query, $postTitle){
+        return $query->withRelations()->where('title', 'like', "%$postTitle%");        
+    }
     
     /**
      * Scope a query to search by keyword name.
