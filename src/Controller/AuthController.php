@@ -101,7 +101,7 @@ final class AuthController {
     }   
 
      /**
-     * Validate user data are correct.
+     * Validating user data.
      *
      * @param array $userData
      *
