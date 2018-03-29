@@ -11,6 +11,7 @@ $app->get('/', function (Request $request, Response $response, array $args) {
 
 $app->get('/posts', "Marcosricardoss\Restful\Controller\PostController:getPosts");
 $app->get('/posts/{id}', "Marcosricardoss\Restful\Controller\PostController:getPost");
+$app->get('/posts/{field:title|category|keyword|createdBy}/{search}', "Marcosricardoss\Restful\Controller\PostController:searchPost");
 
 $app->group('/posts', function () {
     $this->map(['POST'], '', "Marcosricardoss\Restful\Controller\PostController:create");
