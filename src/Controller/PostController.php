@@ -25,6 +25,8 @@ final class PostController {
      */
     public function getPosts($request, $response, $args) {
         $result = Post::withRelations()->get();        
+        $this->formatPostDataForClient($result);
+
         return $response->withJson($result);
     }
 
@@ -77,6 +79,22 @@ final class PostController {
             }
             $post->keywords()->attach($keywords);
         });
+    }
+
+    /**
+     * Format post information return by Eloquent for API format.
+     *
+     * @param Illuminate\Database\Eloquent\Collection $emojiData
+     *
+     * @return void
+     */
+    private function formatPostDataForClient(&$postData){
+        $postData = $postData->toArray();
+        foreach ($postData as $key => &$res) {
+            $res['keywords'] = array_map(function ($arr) { return $arr['name']; }, $res['keywords']);
+            $res['category'] = $res['category']['name'];
+            $res['created_by'] = $res['created_by']['username'];
+        }
     }
 
     /**
