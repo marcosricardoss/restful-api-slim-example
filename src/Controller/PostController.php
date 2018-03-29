@@ -102,6 +102,25 @@ final class PostController {
     }
 
     /**
+     * Route for deleting a post.
+     *
+     * @param Slim\Http\Request  $request
+     * @param Slim\Http\Response $response
+     * @param array              $args
+     *
+     * @return Slim\Http\Response
+     */
+    public function delete($request, $response, $args) {
+        $user = $request->getAttribute('user');
+        $post = $user->posts()->find($args['id']);
+        if (!$post) {
+            throw new \DomainException("You're not allowed to delete a post that you did not create.");
+        }
+        $post->delete();
+        return $response->withJson(['message' => 'Post successfully deleted.'], 200);
+    }
+
+    /**
      * Format post information return by Eloquent for API format.
      *
      * @param Illuminate\Database\Eloquent\Collection $emojiData
