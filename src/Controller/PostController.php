@@ -169,7 +169,7 @@ final class PostController {
     private function searchPostBy($field, $searchValue) {       
 
         if ($field === 'title') {
-            $result = Post::searchByKeywordName($searchValue)->get();
+            $result = Post::searchByTitle($searchValue)->get();
         } elseif ($field === 'keyword') {
             $result = Post::searchByKeywordName($searchValue)->get();
         } elseif ($field === 'createdBy') {
