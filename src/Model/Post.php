@@ -54,6 +54,16 @@ class Post extends Eloquent {
     public function scopeSearchByTitle($query, $postTitle){
         return $query->withRelations()->where('title', 'like', "%$postTitle%");        
     }
+
+     /**
+     * Scope a query to search by category name.
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeSearchByCategoryName($query, $categoryName){
+        return $query->withRelations()
+                     ->joinTableLikeNameColumn('categories', $categoryName, 'category_id');
+    }
     
     /**
      * Scope a query to search by keyword name.
@@ -63,6 +73,21 @@ class Post extends Eloquent {
     public function scopeSearchByKeywordName($query, $keywordName) {
         return $query->withRelations()
                      ->joinKeywordsTableLikeNameColumn($keywordName);
+    }
+
+    /**
+     * Scope a query to join search table.
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeJoinTableLikeNameColumn($query, $tableName, $name, $idFieldOnPost = 'id', $nameColumn = 'name') {
+        return $query->join($tableName,
+                            function ($join) use ($tableName, $name, $nameColumn, $idFieldOnPost) {
+                                $join->on("posts.$idFieldOnPost", '=', "$tableName.id");
+                                $join->where("$tableName.$nameColumn", 'like', "%$name%");
+                            }
+                        )
+                    ->select(Manager::raw('posts.*'));
     }
 
     /**
