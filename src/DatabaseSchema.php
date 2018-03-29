@@ -39,11 +39,12 @@ class DatabaseSchema {
     }
 
     public static function createPostTable() {
-        if (!Capsule::schema()->hasTable('post')) {
-            Capsule::schema()->create('post', function (Blueprint $table) {
+        if (!Capsule::schema()->hasTable('posts')) {
+            Capsule::schema()->create('posts', function (Blueprint $table) {
                 $table->increments('id');
                 $table->string('title');                
-                $table->integer('category_id');
+                $table->text('content')->nullable(); 
+                $table->integer('category_id')->nullable();
                 $table->integer('created_by');
                 $table->timestamps();
             });
