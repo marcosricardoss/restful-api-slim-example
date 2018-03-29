@@ -13,7 +13,6 @@ use Marcosricardoss\Restful\Model\Keyword;
 
 final class PostController {
 
-
     /**
      * Fetch all posts.
      *
@@ -28,6 +27,27 @@ final class PostController {
         $this->formatPostDataForClient($result);
 
         return $response->withJson($result);
+    }
+
+    /**
+     * Get a single post.
+     *
+     * @param Slim\Http\Request  $request
+     * @param Slim\Http\Response $response
+     * @param array              $args
+     *
+     * @return Slim\Http\Response
+     */
+    public function getPost($request, $response, $args) {
+        $result = Post::withRelations()->find($args['id']);
+        if (!$result) {
+            return $response->withJson(['message' => 'The requested Post is not found.'], 404);
+        }
+        $res = $result->toArray();
+        $res['keywords'] = array_map(function ($arr) { return $arr['name']; }, $res['keywords']);
+        $res['category'] = $res['category']['name'];
+        $res['created_by'] = $res['created_by']['username'];
+        return $response->withJson($res);
     }
 
     /**
