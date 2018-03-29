@@ -6,6 +6,7 @@ use Illuminate\Database\Capsule\Manager;
 use Marcosricardoss\Restful\Helpers;
 use Marcosricardoss\Restful\Model\User;
 use Marcosricardoss\Restful\Model\Post;
+use Marcosricardoss\Restful\Model\Keyword;
 use Marcosricardoss\Restful\Model\Category;
 
 final class PostController {
@@ -47,6 +48,17 @@ final class PostController {
             $post->content = $postData['content'];
             $post->category_id = $category->id;
             $user->posts()->save($post);            
+            $keywords = [];
+            foreach ($postData['keywords'] as $key => $keyword) {
+                $keyword = trim($keyword);
+                //Skip empty keywords
+                if (!$keyword) {
+                    continue;
+                }
+                $keywordModel = Keyword::firstOrCreate(['name' => $keyword]);
+                $keywords[] = $keywordModel->id;
+            }
+            $post->keywords()->attach($keywords);
         });
     }
 
