@@ -69,7 +69,7 @@ To get all post, you send a `GET` request to `/posts` route like so:
 ![Get All Posts](screenshots/screenshot_get_all_posts.png "Get All Posts")
 
 ### Get a Post
-To get an Post, you send a `GET` request to `/emoji/{id of post}` route like so:
+To get an Post, you send a `GET` request to `/post/{id of post}` route like so:
 
 ![Get Post](screenshots/screenshot_get_a_post.png "Get Post")
 
@@ -109,7 +109,7 @@ To update post, you send a `PUT` or `PATCH` request, with your authentication to
 
 #### The MIT License (MIT)
 
-Copyright (c) 2016 Marcos Ricardo <marcosricardoss@gmail.com>
+Copyright (c) 2018 Marcos Ricardo <marcosricardoss@gmail.com>
 
 > Permission is hereby granted, free of charge, to any person obtaining a copy
 > of this software and associated documentation files (the "Software"), to deal
