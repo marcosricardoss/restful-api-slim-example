@@ -14,7 +14,11 @@ class RestfulApiTest extends PHPUnit_Framework_TestCase {
     protected $user;
     protected $registerErrorMessage;    
 
-    public function setUp() {
+    function __construct() {
+        
+    }
+
+    public function setUp() {        
         $root = vfsStream::setup();
         $envFilePath = vfsStream::newFile('.env')->at($root);
         $envFilePath->setContent('
@@ -30,7 +34,7 @@ class RestfulApiTest extends PHPUnit_Framework_TestCase {
             collation=utf8_unicode_ci
             database=restfulapi
             ');
-        $this->app = (new App($root->url()))->get();
+        $this->app = (new App($root->url()))->get();        
         $this->user = TestDatabasePopulator::populate();
         $this->registerErrorMessage = 'Username or Password field not provided.';
     }
@@ -50,6 +54,31 @@ class RestfulApiTest extends PHPUnit_Framework_TestCase {
             'REQUEST_METHOD' => 'POST',
             'REQUEST_URI'    => $url,
             'CONTENT_TYPE'   => 'application/x-www-form-urlencoded',
+        ]);
+        $req = Request::createFromEnvironment($env)->withParsedBody($body);
+        $this->app->getContainer()['request'] = $req;
+        return $this->app->run(true);
+    }
+
+    protected function patchWithToken($url, $token, $body) {
+        $env = Environment::mock([
+            'REQUEST_METHOD'         => 'PATCH',
+            'REQUEST_URI'            => $url,
+            'X-HTTP-Method-Override' => 'PATCH',
+            'HTTP_AUTHORIZATION'     => 'Bearer '.$token,
+            'CONTENT_TYPE'           => 'application/x-www-form-urlencoded',
+        ]);
+        $req = Request::createFromEnvironment($env)->withParsedBody($body);
+        $this->app->getContainer()['request'] = $req;
+        return $this->app->run(true);
+    }
+
+    protected function postWithToken($url, $token, $body) {
+        $env = Environment::mock([
+            'REQUEST_METHOD'     => 'POST',
+            'REQUEST_URI'        => $url,
+            'HTTP_AUTHORIZATION' => 'Bearer '.$token,
+            'CONTENT_TYPE'       => 'application/x-www-form-urlencoded',
         ]);
         $req = Request::createFromEnvironment($env)->withParsedBody($body);
         $this->app->getContainer()['request'] = $req;
