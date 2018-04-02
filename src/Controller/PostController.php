@@ -81,12 +81,22 @@ final class PostController {
      */
     private function createPost($postData, $user) {
         Manager::transaction(function () use ($postData, $user) {
-            $category = Category::firstOrCreate(['name' => $postData['category']]);
-            $post = new Post();
+            # adding post
+            $post = new Post();            
             $post->title = $postData['title'];
-            $post->content = $postData['content'];
-            $post->category_id = $category->id;
-            $user->posts()->save($post);            
+            
+            if(Helpers::keyExistAndNotEmptyString('content', $postData)) {
+                $post->content = $postData['content'];
+            }                         
+            
+            if(Helpers::keyExistAndNotEmptyString('category', $postData)) {
+                $category = Category::firstOrCreate(['name' => $postData['category']]);
+                $post->category_id = $category->id;
+            } 
+            
+            $user->posts()->save($post);
+
+            # post keywords
             $keywords = [];
             foreach ($postData['keywords'] as $key => $keyword) {
                 $keyword = trim($keyword);
@@ -205,10 +215,15 @@ final class PostController {
      * @return bool
      */
     private function requiredPostDataAreProvided($postData) {
-        $requiredStrings = ['title','category'];
+        $requiredStrings = ['title'];
         if (!Helpers::keysExistAndNotEmptyString($requiredStrings, $postData)) {
             return false;
         }        
+
+        if(empty($postData['keywords']) || !is_array($postData['keywords'])) {
+            return false;
+        }
+
         return true;
     }
 }
