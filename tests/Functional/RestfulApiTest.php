@@ -13,10 +13,9 @@ class RestfulApiTest extends PHPUnit_Framework_TestCase {
     protected $app;
     protected $user;
     protected $registerErrorMessage;    
-
-    function __construct() {
-        
-    }
+    protected $saveErrorMessage;   
+    protected $saveSuccessMessage;
+    protected $updateSuccessMessage;
 
     public function setUp() {        
         $root = vfsStream::setup();
@@ -37,6 +36,9 @@ class RestfulApiTest extends PHPUnit_Framework_TestCase {
         $this->app = (new App($root->url()))->get();        
         $this->user = TestDatabasePopulator::populate();
         $this->registerErrorMessage = 'Username or Password field not provided.';
+        $this->saveErrorMessage = 'The supplied post data is not formatted correctly.';
+        $this->saveSuccessMessage = 'Post created successfully.';
+        $this->updateSuccessMessage = 'Post updated successfully.';
     }
 
     protected function get($url) {
@@ -58,6 +60,18 @@ class RestfulApiTest extends PHPUnit_Framework_TestCase {
         $req = Request::createFromEnvironment($env)->withParsedBody($body);
         $this->app->getContainer()['request'] = $req;
         return $this->app->run(true);
+    }   
+
+    protected function postWithToken($url, $token, $body) {
+        $env = Environment::mock([
+            'REQUEST_METHOD'     => 'POST',
+            'REQUEST_URI'        => $url,
+            'HTTP_AUTHORIZATION' => 'Bearer '.$token,
+            'CONTENT_TYPE'       => 'application/x-www-form-urlencoded',
+        ]);
+        $req = Request::createFromEnvironment($env)->withParsedBody($body);
+        $this->app->getContainer()['request'] = $req;
+        return $this->app->run(true);
     }
 
     protected function patchWithToken($url, $token, $body) {
@@ -73,14 +87,16 @@ class RestfulApiTest extends PHPUnit_Framework_TestCase {
         return $this->app->run(true);
     }
 
-    protected function postWithToken($url, $token, $body) {
+    protected function deleteWithToken($url, $token)
+    {
         $env = Environment::mock([
-            'REQUEST_METHOD'     => 'POST',
-            'REQUEST_URI'        => $url,
-            'HTTP_AUTHORIZATION' => 'Bearer '.$token,
-            'CONTENT_TYPE'       => 'application/x-www-form-urlencoded',
+            'REQUEST_METHOD'         => 'DELETE',
+            'REQUEST_URI'            => $url,
+            'X-HTTP-Method-Override' => 'DELETE',
+            'HTTP_AUTHORIZATION'     => 'Bearer '.$token,
+            'CONTENT_TYPE'           => 'application/x-www-form-urlencoded',
         ]);
-        $req = Request::createFromEnvironment($env)->withParsedBody($body);
+        $req = Request::createFromEnvironment($env);
         $this->app->getContainer()['request'] = $req;
         return $this->app->run(true);
     }
