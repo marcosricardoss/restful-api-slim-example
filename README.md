@@ -101,6 +101,10 @@ To update post, you send a `PUT` or `PATCH` request, with your authentication to
 
 `Note: You can only update a Post you created personally.`
 
+## Tests
+
+Run the test with `composer test` command
+
 ### Credits
 
 [Marcos Ricardo](https://github.com/marcosricardoss/)
