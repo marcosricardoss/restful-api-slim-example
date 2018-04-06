@@ -1,18 +1,39 @@
-version: '2'
+version: '3.3'
 
 volumes:
     logs:
         driver: local
+    slimdb:
 
 services:
-    slim:
-        image: php:7-alpine
-        working_dir: /var/www
-        command: php -S 0.0.0.0:8080 -t public index.php
-        environment:
-            docker: "true"
+
+    db:
+        image: mysql:5.7     
+        container_name: restful-api-slim-example-database
+        restart: always     
+        volumes:
+            - slimdb:/var/lib/mysql                 
         ports:
-            - 8080:8080
+            - "3320:3306"
+        environment:
+            MYSQL_ROOT_PASSWORD: 123
+            MYSQL_DATABASE: restfulapi
+            MYSQL_USER: user
+            MYSQL_PASSWORD: 123
+
+    slim:        
+        image: nanoninja/php-fpm
+        container_name: restful-api-slim-example
+        command: php -S 0.0.0.0:8080 -t public public/index.php
+        restart: always        
+        depends_on:
+            - db                
+        working_dir: /var/www
         volumes:
             - .:/var/www
             - logs:/var/www/logs
+        ports:
+            - 8080:8080
+        environment:
+            docker: "true"
+        
