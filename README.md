@@ -63,19 +63,21 @@ After configuring the environment, you need to set your environment variables to
 
 For the tests, it is necessary to change the environment variables in the virtual file environment that is used to mock the app. You can do this by editing the /tests/Functional/RestfulApiTest.php file, in the following snippet of code:
 
-$envFilePath->setContent("
-            APP_SECRET=secretKey 
-            JWT_ALGORITHM=HS256
-            [Database]
-            driver=mysql
-            host=127.0.0.1
-            username=root
-            password=123
-            port=3320
-            charset=utf8
-            collation=utf8_unicode_ci
-            database=restfulapi
-            ");
+```    
+    $envFilePath->setContent("
+                APP_SECRET=secretKey 
+                JWT_ALGORITHM=HS256
+                [Database]
+                driver=mysql
+                host=127.0.0.1
+                username=root
+                password=123
+                port=3320
+                charset=utf8
+                collation=utf8_unicode_ci
+                database=restfulapi
+                ");
+```                
 
 Finally, boot-up the API service with PHP's Built-in web server:
 
