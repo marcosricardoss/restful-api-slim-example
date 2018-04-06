@@ -7,6 +7,7 @@ use Marcosricardoss\Restful\App;
 use Marcosricardoss\Restful\User;
 
 require_once 'TestDatabasePopulator.php';
+require_once 'env.php';
 
 class RestfulApiTest extends PHPUnit_Framework_TestCase {
 
@@ -15,25 +16,16 @@ class RestfulApiTest extends PHPUnit_Framework_TestCase {
     protected $registerErrorMessage;    
     protected $saveErrorMessage;   
     protected $saveSuccessMessage;
-    protected $updateSuccessMessage;
+    protected $updateSuccessMessage;    
 
-    public function setUp() {                
+    public function setUp() {                       
 
+        global $env;
+                
         $root = vfsStream::setup();
         $envFilePath = vfsStream::newFile('.env')->at($root);        
-        $envFilePath->setContent("
-            APP_SECRET=secretKey 
-            JWT_ALGORITHM=HS256
-            [Database]
-            driver=mysql
-            host=127.0.0.1
-            username=root
-            password=123
-            port=3320
-            charset=utf8
-            collation=utf8_unicode_ci
-            database=restfulapi
-            ");
+        $envFilePath->setContent($env);
+        
         $this->app = (new App($root->url()))->get();        
         $this->user = TestDatabasePopulator::populate();
         $this->registerErrorMessage = 'Username or Password field not provided.';
