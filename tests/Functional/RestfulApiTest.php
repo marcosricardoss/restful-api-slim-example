@@ -17,10 +17,11 @@ class RestfulApiTest extends PHPUnit_Framework_TestCase {
     protected $saveSuccessMessage;
     protected $updateSuccessMessage;
 
-    public function setUp() {        
+    public function setUp() {                
+
         $root = vfsStream::setup();
-        $envFilePath = vfsStream::newFile('.env')->at($root);
-        $envFilePath->setContent('
+        $envFilePath = vfsStream::newFile('.env')->at($root);        
+        $envFilePath->setContent("
             APP_SECRET=secretKey 
             JWT_ALGORITHM=HS256
             [Database]
@@ -28,11 +29,11 @@ class RestfulApiTest extends PHPUnit_Framework_TestCase {
             host=127.0.0.1
             username=root
             password=123
-            port=3306
+            port=3320
             charset=utf8
             collation=utf8_unicode_ci
             database=restfulapi
-            ');
+            ");
         $this->app = (new App($root->url()))->get();        
         $this->user = TestDatabasePopulator::populate();
         $this->registerErrorMessage = 'Username or Password field not provided.';
