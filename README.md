@@ -2,13 +2,21 @@
 
 This is a simple Restful API for Blog Service using the Slim Framework.
 
+## Install package dependencies:
+
+* [Git](https://git-scm.com/downloads)
+* [Composer](https://getcomposer.org/)
+* [Docker](https://docs.docker.com/engine/installation/)
+* [Docker Compose](https://docs.docker.com/compose/install/)
+
+
 ## Usage Clone this repository like so:
 
 ```
     git clone https://github.com/marcosricardoss/restful-api-slim-example.git
 ```
 
-Change your directory to NaijaEmoji directory like so:
+Change your directory to restful directory like so:
 
 ```
     cd restful-api-slim-example
@@ -18,9 +26,26 @@ Install package dependencies:
 
 ```
     composer install
-```    
+```
 
-You need set your environment variables to define your database parameters or rename .env.example file in project to .env and change the below to your local configuration.
+## Building and running the Docker Compose
+
+Building the docker image:
+
+```
+docker-compose build
+```
+
+Finally, boot-up the API service with PHP's Built-in web server:
+
+```
+docker-compose up -d
+```
+## Setting up the application manually
+
+The application is configured to work with docker. But if you prefer you can configure every environment manually to run the application by installing the web server with php and the MySQL database.
+
+After configuring the environment, you need to set your environment variables to define your database parameters or rename .env.example file in project to .env and change the below to your local configuration:
 
 ```
     APP_SECRET=YourSecretKey 
@@ -35,6 +60,22 @@ You need set your environment variables to define your database parameters or re
     collation=utf8_unicode_ci
     database=YourDatabase
 ```
+
+For the tests, it is necessary to change the environment variables in the virtual file environment that is used to mock the app. You can do this by editing the /tests/Functional/RestfulApiTest.php file, in the following snippet of code:
+
+$envFilePath->setContent("
+            APP_SECRET=secretKey 
+            JWT_ALGORITHM=HS256
+            [Database]
+            driver=mysql
+            host=127.0.0.1
+            username=root
+            password=123
+            port=3320
+            charset=utf8
+            collation=utf8_unicode_ci
+            database=restfulapi
+            ");
 
 Finally, boot-up the API service with PHP's Built-in web server:
 
