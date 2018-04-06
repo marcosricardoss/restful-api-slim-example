@@ -30,60 +30,29 @@ Install package dependencies:
 
 ## Building and running the Docker Compose
 
-Building the docker image:
+The application is configured to work with docker. All you need to do is run the two commands to build and boot-up the docker container and with the application.
 
 ```
 docker-compose build
 ```
 
-Finally, boot-up the API service with PHP's Built-in web server:
+```
+docker-compose up
+```
 
-```
-docker-compose up -d
-```
 ## Setting up the application manually
 
-The application is configured to work with docker. But if you prefer you can configure every environment manually to run the application by installing the web server with php and the MySQL database.
-
-After configuring the environment, you need to set your environment variables to define your database parameters or rename .env.example file in project to .env and change the below to your local configuration:
-
-```
-    APP_SECRET=YourSecretKey 
-    JWT_ALGORITHM=HS256
-    [Database]
-    driver=mysql
-    host=127.0.0.1
-    username=YourUsername
-    password=YourPassword
-    port=3306
-    charset=utf8
-    collation=utf8_unicode_ci
-    database=YourDatabase
-```
-
-For the tests, it is necessary to change the environment variables in the virtual file environment that is used to mock the app. You can do this by editing the /tests/Functional/RestfulApiTest.php file, in the following snippet of code:
-
-```    
-    $envFilePath->setContent("
-                APP_SECRET=secretKey 
-                JWT_ALGORITHM=HS256
-                [Database]
-                driver=mysql
-                host=127.0.0.1
-                username=root
-                password=123
-                port=3320
-                charset=utf8
-                collation=utf8_unicode_ci
-                database=restfulapi
-                ");
-```                
+If you prefer you can configure every environment manually to run the application by installing the web server with php and the MySQL database. After configuring the environment, you need to set your environment variables to define your database parameters in the .env environment file.
 
 Finally, boot-up the API service with PHP's Built-in web server:
 
-```    
+Note: The test has its own environment configuration that is loaded into the virtual file in the mocked application. You can set these settings in the env.php file
+
+```
     composer start
-```    
+```
+
+### Examples
 
 All examples are shown in POSTMAN.
 
